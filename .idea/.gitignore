@@ -1,0 +1,13 @@
+# IDE
+.idea/
+*.iml
+
+# Build
+target/
+out/
+build/
+bin/
+
+# Java
+*.class
+*.log
