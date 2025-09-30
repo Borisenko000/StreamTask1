@@ -5,9 +5,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -33,21 +34,33 @@ public class Main {
             }
             finalList.add(strb.toString());
         }
-        Map<String, Long> global = Collections.synchronizedMap(new HashMap<>(threads));
-        try(ExecutorService pool = Executors.newFixedThreadPool(threads)) {
-            for (String s : text) {
-                pool.submit(() -> {
+        Map<String, Long> global = new HashMap<>(threads);
+        ExecutorService pool = Executors.newFixedThreadPool(threads);
+        List<Future<?>> result = new ArrayList<>(threads);
+        try {
+            for (String s : finalList) {
+                Future<?> future = pool.submit(() -> {
                     Map<String, Long> local = Arrays.stream(s.split("\\s+"))
-                            .filter(k  -> !k.isEmpty())
                             .map(k -> k.toLowerCase().replaceAll("\\p{Punct}", ""))
+                            .filter(k -> !k.isEmpty())
                             .collect(Collectors.groupingBy(k -> k, Collectors.counting()));
                     synchronized (global) {
-                        for (Map.Entry<String, Long> e: local.entrySet()) {
+                        for (Map.Entry<String, Long> e : local.entrySet()) {
                             global.merge(e.getKey(), e.getValue(), Long::sum);
                         }
                     }
                 });
+                result.add(future);
             }
+            for(Future<?> f : result) {
+                f.get();
+            }
+        } catch (ExecutionException e) {
+            System.out.println("Непредвиденная ошибка выполнения");
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } finally {
+            pool.shutdown();
         }
         global.forEach((k, v) -> System.out.println(k + ":" + v));
     }
