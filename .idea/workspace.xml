@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d9772460-f536-4704-8153-b8235b08327b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/edu/polina/stream/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/edu/polina/stream/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +41,7 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "CountFrequency",
+    "git-widget-placeholder": "ThreadsToMap",
     "last_opened_file_path": "C:/Users/Professional/java-projects/github/StreamTask1"
   }
 }]]></component>
